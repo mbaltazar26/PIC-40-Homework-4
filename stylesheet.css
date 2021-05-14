@@ -1,0 +1,19 @@
+#animationBackground
+{
+    background-color: white;
+    width: 100%;
+    height: 400px; 
+    position: relative;
+}
+
+#animatedSection
+{
+    background-color: white;
+    width: 25%;
+    height: 200px; 
+    position: absolute;
+    bottom: 100px; 
+    left:75%;
+
+}
+
