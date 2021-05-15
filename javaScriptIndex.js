@@ -1,5 +1,5 @@
-var nameEntered = window.prompt("What is your name?");
-let found = false;
+var nameEntered = window.prompt("What is your name?"); //stores name inputted
+let found = false;  //assume they are not on the list by default 
 let names = [];
 
 let xhttp = new XMLHttpRequest(); 
@@ -7,49 +7,53 @@ xhttp.onreadystatechange = function()
 {
 	if (this.readyState === 4 && this.status === 200) 
     {
-		names = (this.responseText.toString());
-		names = names.split(",");
-		for(let i = 0; i < names.length; i++)
+		let s = this.responseText.toString();  // converts document contents to a string
+		names = s.split(",");                   //seperates the contents into the names by commas and stores in names[]
+		for(let i = 0; i < names.length; i++)   // goes through the names[] array and looks for a match for name inputted 
         {
-			if (names[i]===nameEntered) 
+			if (names[i] == nameEntered)        
                 {					
-					found=true;
+					found=true;                 // only set to true if found 
 				}
 		}
     }
 }
 
 
-// set GET request to read from the file, doing it 'asynchronously'
 xhttp.open("GET", "https://www.math.ucla.edu/~mikel/teaching/pic40a/HW4/guests.php" + "?v=" + Math.random() , true);
-xhttp.send(); // do it!
+xhttp.send();               
 
-
-if (found == false) 
+if (found == false)     // if name is not counted, no special greeting
 {
     document.getElementById("elitism").innerText = "No special greeting for you."
     
 }
 else 
-{
-    let myFieldset = document.createElement("fieldset");
-    let myForm = document.createElement("form");
-    myFieldset.appendChild(myForm);
-    myFieldset.appendChild(document.createElement("hr"));
-    let myFormC = document.createElement("form");
-    myFieldset.appendChild(myFormC);
-    document.getElementById("formy").appendChild(myFieldset);
-    let colorArr = ['Red','Yellow','Blue'];
-    let big = document.getElementById("animationBackground");
+//// hello whoever grades my hw 
+//// I didnt get the AJAX part to work
+//// but if you delete the 'else' above 
+//// as well as the { right here and another I'll annotate 
+//// it kinda works. 
+{  
+    let myFieldset = document.createElement("fieldset");    // fieldset to contain radio buttons for color and number
+    let myForm = document.createElement("form");            // radio buttons for number 
+    myFieldset.appendChild(myForm);                         // add to fieldset
+    myFieldset.appendChild(document.createElement("hr"));   // border between the color and number radio buttons
+    let myFormC = document.createElement("form");           // radio buttons for color
+    myFieldset.appendChild(myFormC);                            // add to fieldset
+    document.getElementById("formy").appendChild(myFieldset);   // add the fieldset to section in body from html file
+    let colorArr = ['Red','Yellow','Blue'];                     // array storing colors 
+    let big = document.getElementById("animationBackground");   
     let small = document.getElementById("animatedSection");
-    small.innerText="Special Greeting";
-    big.style.backgroundColor = "gray";
-    let speedyTime = 60;
-    let goingLeft = true;
+    small.innerText="Welcome" + nameEntered;                    
+    big.style.backgroundColor = "gray";     
+    let speedyTime = 60;                                    // default speed 
+    let goingLeft = true;                                   // default direction
 
 
 
-for (let i = 0; i < 51; i++)
+// creating radio buttons for speed below for 0-50, and making 0 checked by default 
+for (let i = 0; i < 51; i++) 
 {
     let button = document.createElement("input");
     button.type="radio"
@@ -69,6 +73,8 @@ for (let i = 0; i < 51; i++)
     }
 }
 
+// making radio buttons for color, assigning color array values to each button 
+// red is marked as checked as default 
 for (let i = 0; i < 3; i++)
 {
     let buttonC = document.createElement("input");
@@ -90,6 +96,7 @@ for (let i = 0; i < 3; i++)
     }
 }
 
+// makes the animation interactive, and changes the color when clicked
 let colors = document.querySelectorAll(".Color");
 for (let i = 0; i < 3; i++)
 {
@@ -99,21 +106,23 @@ for (let i = 0; i < 3; i++)
     });
 }
 
+// makes the animation interactive, and changes the speed when clicked
 let speeds = document.querySelectorAll(".SpeedClass");
 for (let i = 0; i < 51; i++)
 {
     speeds[i].addEventListener("click", function() {
         let selectedSpeed = this.value; 
-        speedyTime = (60-selectedSpeed);
+        speedyTime = (60-selectedSpeed);    // the higher the number, the faster it goes. Passes to animate functions
     });
 }
 
 const box = {
-    width: 25, // %
-    left: 0, // %
-    end_pos: 100, // %
-    dx: 1, // % move by element: null, // the div 
-    event_id: null // event id
+    width: 25, 
+    left: 0, 
+    end_pos: 100,
+    dx: 1, 
+    element: null, 
+    event_id: null 
     };
 
     function animate()
@@ -126,8 +135,8 @@ const box = {
         }
        if (box.left + box.width > box.end_pos)
             {
-                goingLeft=false;
-                animateRight();
+                goingLeft=false;    // sets direction 
+                animateRight(); // starts to go backwards until at starting position 
             }
     }
 
@@ -142,14 +151,20 @@ const box = {
         }
         if (box.left + box.width == 25)
         {
-            goingLeft=true;
-            animate();
+            goingLeft=true;         // sets direction
+            animate();              // starts to go forward once again 
         }
     } 
 
    window.addEventListener("load", ()=>{
     box.element = small;
-    animate(); });
+    animate(); });                  
+
+    
+//// If you delete the } below as well as the 
+//// things mentioned above it should kind of work 
+//// AAAAAAA 
+//// I am sorry I'm like this 
 }
 
 
